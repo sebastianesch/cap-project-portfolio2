@@ -42,6 +42,10 @@ modules:
       - projectportfoliocustomersapp.zip
       name: projectportfoliocustomersapp
       target-path: app/
+    - artifacts:
+      - projectportfolioprojectsapp.zip
+      name: projectportfolioprojectsapp
+      target-path: app/
 - name: cap-project-portfolio-destination-content
   type: com.sap.application.content
   requires:
@@ -74,6 +78,16 @@ modules:
 - name: projectportfoliocustomersapp
   type: html5
   path: app/customersapp
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: projectportfolioprojectsapp
+  type: html5
+  path: app/projectsapp
   build-parameters:
     build-result: dist
     builder: custom
