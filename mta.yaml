@@ -37,7 +37,11 @@ modules:
       content-target: true
   build-parameters:
     build-result: app/
-    requires: null
+    requires:
+    - artifacts:
+      - projectportfoliocustomersapp.zip
+      name: projectportfoliocustomersapp
+      target-path: app/
 - name: cap-project-portfolio-destination-content
   type: com.sap.application.content
   requires:
@@ -67,6 +71,16 @@ modules:
         existing_destinations_policy: ignore
   build-parameters:
     no-source: true
+- name: projectportfoliocustomersapp
+  type: html5
+  path: app/customersapp
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
 resources:
 - name: cap-project-portfolio-auth
   type: org.cloudfoundry.managed-service
