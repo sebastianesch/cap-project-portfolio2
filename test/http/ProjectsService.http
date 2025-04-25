@@ -94,3 +94,38 @@ GET {{server}}/odata/v4/projects/Customers
 # @name ProjectTypes_GET
 GET {{server}}/odata/v4/projects/ProjectTypes
 {{auth}}
+
+###
+# @name isStartedFunction_GET
+GET {{server}}/odata/v4/projects/isStarted(project=c8941700-2a5e-4cae-a809-70d43f647029)
+{{auth}}
+
+###
+# @name endProjectAction_POST
+POST {{server}}/odata/v4/projects/endProject
+{{auth}}
+Content-Type: application/json
+
+{
+    "project": "c8941700-2a5e-4cae-a809-70d43f647029"
+}
+
+###
+# @name Projects_hasStartedFunction_GET
+GET {{server}}/odata/v4/projects/Projects(ID=c8941700-2a5e-4cae-a809-70d43f647029,IsActiveEntity=true)/ProjectsService.hasStarted()
+{{auth}}
+
+###
+# @name Projects_hasEndedFunction_GET
+GET {{server}}/odata/v4/projects/Projects(ID=c8941700-2a5e-4cae-a809-70d43f647029,IsActiveEntity=true)/ProjectsService.hasEnded()
+{{auth}}
+
+###
+# @name Projects_stopAction_POST
+POST {{server}}/odata/v4/projects/Projects(ID=c8941700-2a5e-4cae-a809-70d43f647029,IsActiveEntity=true)/ProjectsService.stop
+{{auth}}
+Content-Type: application/json
+
+{
+    "endDate": "2023-10-25"
+}
