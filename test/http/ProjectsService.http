@@ -1,5 +1,5 @@
 @server = http://localhost:4004
-@auth = Authorization: Basic alice:
+@auth = Authorization: Basic bob:
 
 
 ### Projects

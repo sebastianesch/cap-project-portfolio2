@@ -21,6 +21,17 @@
     "requires": {
       "[production]": {
         "auth": "xsuaa"
+      },
+      "auth" : {
+        "kind" : "mocked",
+        "users": {
+          "alice": {
+            "roles": ["CustomerAdmin"]
+          },
+          "bob": {
+            "roles": ["User"]
+          }
+        }
       }
     }
   }
