@@ -4,6 +4,7 @@ version: 1.0.0
 description: "CAP Project Portfolio"
 parameters:
   enable-parallel-deployments: true
+  deploy_mode: html5-repo
 build-parameters:
   before-all:
     - builder: custom
@@ -38,6 +39,18 @@ modules:
     requires:
       - name: cap-project-portfolio-db
 
+  - name: cap-project-portfolio-app-deployer
+    type: com.sap.application.content
+    path: gen
+    requires:
+      - name: cap-project-portfolio-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: app/
+      requires:
+
+
 resources:
   - name: cap-project-portfolio-auth
     type: org.cloudfoundry.managed-service
@@ -58,3 +71,27 @@ resources:
     parameters:
       service: destination
       service-plan: lite
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            existing_destinations_policy: update
+            destinations:
+              - Name: cap-project-portfolio-srv-api
+                URL: ~{srv-api/srv-url}
+                Authentication: NoAuthentication
+                Type: HTTP
+                ProxyType: Internet
+                HTML5.ForwardAuthToken: true
+                HTML5.DynamicDestination: true
+              - Name: ui5
+                URL: https://ui5.sap.com
+                Authentication: NoAuthentication
+                Type: HTTP
+                ProxyType: Internet
+
+  - name: cap-project-portfolio-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host

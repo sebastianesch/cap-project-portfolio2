@@ -48,7 +48,8 @@
           "url": "db.sqlite"
         }
       },
-      "destinations": true
+      "destinations": true,
+      "html5-runtime": true
     },
     "sql": {
       "native_hana_associations": false
