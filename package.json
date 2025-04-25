@@ -34,7 +34,8 @@
         "users": {
           "alice": {
             "roles": [
-              "CustomerAdmin"
+              "CustomerAdmin",
+              "User"
             ]
           },
           "bob": {
