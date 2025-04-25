@@ -1,5 +1,6 @@
 using { projectportfolio.db as db } from '../db/schema';
 
+@(requires: ['CustomerAdmin'])
 service CustomersService  {
 
     @odata.draft.enabled
