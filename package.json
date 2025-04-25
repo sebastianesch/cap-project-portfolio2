@@ -22,14 +22,18 @@
       "[production]": {
         "auth": "xsuaa"
       },
-      "auth" : {
-        "kind" : "mocked",
+      "auth": {
+        "kind": "mocked",
         "users": {
           "alice": {
-            "roles": ["CustomerAdmin"]
+            "roles": [
+              "CustomerAdmin"
+            ]
           },
           "bob": {
-            "roles": ["User"]
+            "roles": [
+              "User"
+            ]
           }
         }
       }
