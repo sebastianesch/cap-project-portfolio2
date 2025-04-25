@@ -28,6 +28,7 @@ modules:
     requires:
       - name: cap-project-portfolio-auth
       - name: cap-project-portfolio-db
+      - name: cap-project-portfolio-destination
 
   - name: cap-project-portfolio-db-deployer
     type: hdb
@@ -52,3 +53,8 @@ resources:
     parameters:
       service: hana
       service-plan: hdi-shared
+  - name: cap-project-portfolio-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite

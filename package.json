@@ -47,7 +47,8 @@
         "credentials": {
           "url": "db.sqlite"
         }
-      }
+      },
+      "destinations": true
     },
     "sql": {
       "native_hana_associations": false
