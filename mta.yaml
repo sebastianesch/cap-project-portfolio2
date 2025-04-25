@@ -130,6 +130,8 @@ resources:
           existing_destinations_policy: update
     service: destination
     service-plan: lite
+  requires:
+  - name: srv-api
 - name: cap-project-portfolio-html5-repo-host
   type: org.cloudfoundry.managed-service
   parameters:
