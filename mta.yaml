@@ -27,6 +27,15 @@ modules:
           srv-url: ${default-url}
     requires:
       - name: cap-project-portfolio-auth
+      - name: cap-project-portfolio-db
+
+  - name: cap-project-portfolio-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: cap-project-portfolio-db
 
 resources:
   - name: cap-project-portfolio-auth
@@ -38,3 +47,8 @@ resources:
       config:
         xsappname: cap-project-portfolio-${org}-${space}
         tenant-mode: dedicated
+  - name: cap-project-portfolio-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared

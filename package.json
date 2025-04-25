@@ -8,7 +8,8 @@
   "dependencies": {
     "@sap/cds": "^8",
     "express": "^4",
-    "@sap/xssec": "^4"
+    "@sap/xssec": "^4",
+    "@cap-js/hana": "^1"
   },
   "devDependencies": {
     "@cap-js/cds-types": "^0.9.0",
@@ -21,7 +22,10 @@
   "cds": {
     "requires": {
       "[production]": {
-        "auth": "xsuaa"
+        "auth": "xsuaa",
+        "db": {
+          "kind": "hana"
+        }
       },
       "auth": {
         "kind": "mocked",
@@ -44,6 +48,9 @@
           "url": "db.sqlite"
         }
       }
+    },
+    "sql": {
+      "native_hana_associations": false
     }
   }
 }
