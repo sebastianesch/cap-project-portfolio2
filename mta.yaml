@@ -65,6 +65,7 @@ modules:
       instance:
         destinations:
         - Name: projectportfolio_cap_project_portfolio_html5_repo_host
+          ServiceInstanceName: cap-project-portfolio-html5-repo-host
           ServiceKeyName: cap-project-portfolio-html5-repo-host-key
           sap.cloud.service: projectportfolio
         - Authentication: OAuth2UserTokenExchange
