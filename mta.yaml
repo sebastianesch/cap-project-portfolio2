@@ -1,97 +1,118 @@
 _schema-version: 3.3.0
 ID: cap-project-portfolio
+description: CAP Project Portfolio
 version: 1.0.0
-description: "CAP Project Portfolio"
+modules:
+- name: cap-project-portfolio-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: cap-project-portfolio-auth
+  - name: cap-project-portfolio-db
+  - name: cap-project-portfolio-destination-service
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    disk-quota: 768M
+    instances: 1
+    memory: 256M
+  build-parameters:
+    builder: npm-ci
+- name: cap-project-portfolio-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: cap-project-portfolio-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: cap-project-portfolio-app-deployer
+  type: com.sap.application.content
+  path: gen
+  requires:
+  - name: cap-project-portfolio-html5-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: app/
+    requires: null
+- name: cap-project-portfolio-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: cap-project-portfolio-destination-service
+    parameters:
+      content-target: true
+  - name: cap-project-portfolio-html5-repo-host
+    parameters:
+      service-key:
+        name: cap-project-portfolio-html5-repo-host-key
+  - name: cap-project-portfolio-auth
+    parameters:
+      service-key:
+        name: cap-project-portfolio-auth-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: projectportfolio_cap_project_portfolio_html5_repo_host
+          ServiceKeyName: cap-project-portfolio-html5-repo-host-key
+          sap.cloud.service: projectportfolio
+        - Authentication: OAuth2UserTokenExchange
+          Name: projectportfolio_cap_project_portfolio_auth
+          ServiceInstanceName: cap-project-portfolio-auth
+          ServiceKeyName: cap-project-portfolio-auth-key
+          sap.cloud.service: projectportfolio
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+resources:
+- name: cap-project-portfolio-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+- name: cap-project-portfolio-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: cap-project-portfolio-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: cap-project-portfolio-srv-api
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+    service: destination
+    service-plan: lite
+- name: cap-project-portfolio-html5-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-host
 parameters:
-  enable-parallel-deployments: true
   deploy_mode: html5-repo
+  enable-parallel-deployments: true
 build-parameters:
   before-all:
-    - builder: custom
-      commands:
-        - npm ci
-        - npx cds build --production
-modules:
-  - name: cap-project-portfolio-srv
-    type: nodejs
-    path: gen/srv
-    parameters:
-      instances: 1
-      buildpack: nodejs_buildpack
-      disk-quota: 768M
-      memory: 256M
-    build-parameters:
-      builder: npm-ci
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: cap-project-portfolio-auth
-      - name: cap-project-portfolio-db
-      - name: cap-project-portfolio-destination
-
-  - name: cap-project-portfolio-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: cap-project-portfolio-db
-
-  - name: cap-project-portfolio-app-deployer
-    type: com.sap.application.content
-    path: gen
-    requires:
-      - name: cap-project-portfolio-html5-repo-host
-        parameters:
-          content-target: true
-    build-parameters:
-      build-result: app/
-      requires:
-
-
-resources:
-  - name: cap-project-portfolio-auth
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: cap-project-portfolio-${org}-${space}
-        tenant-mode: dedicated
-  - name: cap-project-portfolio-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
-  - name: cap-project-portfolio-destination
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: destination
-      service-plan: lite
-      config:
-        HTML5Runtime_enabled: true
-        init_data:
-          instance:
-            existing_destinations_policy: update
-            destinations:
-              - Name: cap-project-portfolio-srv-api
-                URL: ~{srv-api/srv-url}
-                Authentication: NoAuthentication
-                Type: HTTP
-                ProxyType: Internet
-                HTML5.ForwardAuthToken: true
-                HTML5.DynamicDestination: true
-              - Name: ui5
-                URL: https://ui5.sap.com
-                Authentication: NoAuthentication
-                Type: HTTP
-                ProxyType: Internet
-
-  - name: cap-project-portfolio-html5-repo-host
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: html5-apps-repo
-      service-plan: app-host
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production
