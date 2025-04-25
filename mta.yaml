@@ -1,7 +1,7 @@
 _schema-version: 3.3.0
 ID: cap-project-portfolio
 version: 1.0.0
-description: "A simple CAP project."
+description: "CAP Project Portfolio"
 parameters:
   enable-parallel-deployments: true
 build-parameters:
@@ -17,6 +17,8 @@ modules:
     parameters:
       instances: 1
       buildpack: nodejs_buildpack
+      disk-quota: 768M
+      memory: 256M
     build-parameters:
       builder: npm-ci
     provides:
