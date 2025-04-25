@@ -36,6 +36,12 @@
             ]
           }
         }
+      },
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db.sqlite"
+        }
       }
     }
   }
