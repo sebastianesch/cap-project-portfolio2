@@ -96,8 +96,11 @@ GET {{server}}/odata/v4/projects/ProjectTypes
 {{auth}}
 
 ###
+@projectId = c8941700-2a5e-4cae-a809-70d43f647029
+
+###
 # @name isStartedFunction_GET
-GET {{server}}/odata/v4/projects/isStarted(project=c8941700-2a5e-4cae-a809-70d43f647029)
+GET {{server}}/odata/v4/projects/isStarted(project={{projectId}})
 {{auth}}
 
 ###
@@ -107,22 +110,22 @@ POST {{server}}/odata/v4/projects/endProject
 Content-Type: application/json
 
 {
-    "project": "c8941700-2a5e-4cae-a809-70d43f647029"
+    "project": "{{projectId}}"
 }
 
 ###
 # @name Projects_hasStartedFunction_GET
-GET {{server}}/odata/v4/projects/Projects(ID=c8941700-2a5e-4cae-a809-70d43f647029,IsActiveEntity=true)/ProjectsService.hasStarted()
+GET {{server}}/odata/v4/projects/Projects(ID={{projectId}},IsActiveEntity=true)/ProjectsService.hasStarted()
 {{auth}}
 
 ###
 # @name Projects_hasEndedFunction_GET
-GET {{server}}/odata/v4/projects/Projects(ID=c8941700-2a5e-4cae-a809-70d43f647029,IsActiveEntity=true)/ProjectsService.hasEnded()
+GET {{server}}/odata/v4/projects/Projects(ID={{projectId}},IsActiveEntity=true)/ProjectsService.hasEnded()
 {{auth}}
 
 ###
 # @name Projects_stopAction_POST
-POST {{server}}/odata/v4/projects/Projects(ID=c8941700-2a5e-4cae-a809-70d43f647029,IsActiveEntity=true)/ProjectsService.stop
+POST {{server}}/odata/v4/projects/Projects(ID={{projectId}},IsActiveEntity=true)/ProjectsService.stop
 {{auth}}
 Content-Type: application/json
 
