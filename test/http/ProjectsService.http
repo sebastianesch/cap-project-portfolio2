@@ -1,0 +1,96 @@
+@server = http://localhost:4004
+@auth = Authorization: Basic alice:
+
+
+### Projects
+# @name Projects_GET
+GET {{server}}/odata/v4/projects/Projects
+{{auth}}
+
+
+### Projects Drafts GET
+# @name Projects_Drafts_GET
+GET {{server}}/odata/v4/projects/Projects?$filter=(IsActiveEntity eq false)
+{{auth}}
+
+
+### Projects Draft POST
+# @name Projects_Draft_POST
+POST {{server}}/odata/v4/projects/Projects
+Content-Type: application/json
+{{auth}}
+
+{
+  "name": "name-21295978",
+  "startDate": "2013-07-22",
+  "endDate": "2020-11-14",
+  "description": "description-21295978",
+  "customer": {
+    "ID": "14728029-7f98-4559-8a02-c9bbae637aab"
+  },
+  "type": {
+    "code": "es-2981344"
+  },
+  "createdAt": "2016-11-26T00:00:00.000Z",
+  "createdBy": "createdBy.cog2y@example.com",
+  "modifiedAt": "2023-03-23T00:00:00.000Z",
+  "modifiedBy": "modifiedBy.cog2y@example.net"
+}
+
+
+### Result from POST request above
+@draftID = {{Projects_Draft_POST.response.body.$.ID}}
+
+
+### Projects Draft PATCH
+# @name Projects_Draft_Patch
+PATCH {{server}}/odata/v4/projects/Projects(ID={{draftID}},IsActiveEntity=false)
+Content-Type: application/json
+{{auth}}
+
+{
+  "name": "name-21295978",
+  "startDate": "2013-07-22",
+  "endDate": "2020-11-14",
+  "description": "description-21295978",
+  "customer": {
+    "ID": "14728029-7f98-4559-8a02-c9bbae637aab"
+  },
+  "type": {
+    "code": "es-2981344"
+  },
+  "createdAt": "2016-11-26T00:00:00.000Z",
+  "createdBy": "createdBy.cog2y@example.com",
+  "modifiedAt": "2023-03-23T00:00:00.000Z",
+  "modifiedBy": "modifiedBy.cog2y@example.net"
+}
+
+
+### Projects Draft Prepare
+# @name Projects_Draft_Prepare
+POST {{server}}/odata/v4/projects/Projects(ID={{draftID}},IsActiveEntity=false)/ProjectsService.draftPrepare
+Content-Type: application/json
+{{auth}}
+
+{}
+
+
+### Projects Draft Activate
+# @name Projects_Draft_Activate
+POST {{server}}/odata/v4/projects/Projects(ID={{draftID}},IsActiveEntity=false)/ProjectsService.draftActivate
+Content-Type: application/json
+{{auth}}
+
+{}
+
+
+### Customers
+# @name Customers_GET
+GET {{server}}/odata/v4/projects/Customers
+{{auth}}
+
+
+### ProjectTypes
+# @name ProjectTypes_GET
+GET {{server}}/odata/v4/projects/ProjectTypes
+{{auth}}

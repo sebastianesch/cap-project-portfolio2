@@ -1,0 +1,82 @@
+@server = http://localhost:4004
+@auth = Authorization: Basic alice:
+
+
+### Customers
+# @name Customers_GET
+GET {{server}}/odata/v4/customers/Customers
+{{auth}}
+
+
+### Customers Drafts GET
+# @name Customers_Drafts_GET
+GET {{server}}/odata/v4/customers/Customers?$filter=(IsActiveEntity eq false)
+{{auth}}
+
+
+### Customers Draft POST
+# @name Customers_Draft_POST
+POST {{server}}/odata/v4/customers/Customers
+Content-Type: application/json
+{{auth}}
+
+{
+  "name": "name-11410386",
+  "industry": "industry-11410386",
+  "country": "country-11410386",
+  "createdAt": "2010-04-21T00:00:00.000Z",
+  "createdBy": "createdBy.6skb6@example.com",
+  "modifiedAt": "2002-02-13T00:00:00.000Z",
+  "modifiedBy": "modifiedBy.6skb6@example.com"
+}
+
+
+### Result from POST request above
+@draftID = {{Customers_Draft_POST.response.body.$.ID}}
+
+
+### Customers Draft PATCH
+# @name Customers_Draft_Patch
+PATCH {{server}}/odata/v4/customers/Customers(ID={{draftID}},IsActiveEntity=false)
+Content-Type: application/json
+{{auth}}
+
+{
+  "name": "name-11410386",
+  "industry": "industry-11410386",
+  "country": "country-11410386",
+  "createdAt": "2010-04-21T00:00:00.000Z",
+  "createdBy": "createdBy.6skb6@example.com",
+  "modifiedAt": "2002-02-13T00:00:00.000Z",
+  "modifiedBy": "modifiedBy.6skb6@example.com"
+}
+
+
+### Customers Draft Prepare
+# @name Customers_Draft_Prepare
+POST {{server}}/odata/v4/customers/Customers(ID={{draftID}},IsActiveEntity=false)/CustomersService.draftPrepare
+Content-Type: application/json
+{{auth}}
+
+{}
+
+
+### Customers Draft Activate
+# @name Customers_Draft_Activate
+POST {{server}}/odata/v4/customers/Customers(ID={{draftID}},IsActiveEntity=false)/CustomersService.draftActivate
+Content-Type: application/json
+{{auth}}
+
+{}
+
+
+### Projects
+# @name Projects_GET
+GET {{server}}/odata/v4/customers/Projects
+{{auth}}
+
+
+### ProjectTypes
+# @name ProjectTypes_GET
+GET {{server}}/odata/v4/customers/ProjectTypes
+{{auth}}
